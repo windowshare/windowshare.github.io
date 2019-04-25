@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>windowshare</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="windowshare">
+<meta property="og:url" content="https://wwww.windowshare.top/index.html">
+<meta property="og:site_name" content="windowshare">
+<meta property="og:locale" content="default">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="windowshare">
+  
+    <link rel="alternate" href="/atom.xml" title="windowshare" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">windowshare</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://wwww.windowshare.top"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-x3dh" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/03/27/x3dh/" class="article-date">
+  <time datetime="2019-03-27T14:14:55.000Z" itemprop="datePublished">2019-03-27</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/翻译/">翻译</a>►<a class="article-category-link" href="/categories/翻译/端对端协议/">端对端协议</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/03/27/x3dh/">X3DH(迪菲赫尔曼三重扩展密钥协商协议)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>迪菲赫尔曼三重扩展密钥协商协议</p>
+<p>本文是 <a href="https://en.wikipedia.org/wiki/Signal_Protocol" target="_blank" rel="noopener">Signal 协议</a>中使用的「迪菲赫尔曼三重扩展密钥协议」的中文翻译（部分保持原文不翻译），<a href="https://www.signal.org/docs/specifications/x3dh/" target="_blank" rel="noopener">英文原文地址</a> </p>
+<hr>
+<!-- toc -->
+<ul>
+<li><a href="#1-引言">1. 引言</a></li>
+<li><a href="#2-提要">2. 提要</a><ul>
+<li><a href="#21-x3dh-参数">2.1. X3DH 参数</a></li>
+<li><a href="#22-加密符号">2.2. 加密符号</a></li>
+<li><a href="#23-角色">2.3. 角色</a></li>
+<li><a href="#24-密钥">2.4. 密钥</a></li>
+</ul>
+</li>
+<li><a href="#3-x3dh协议">3. X3DH协议</a><ul>
+<li><a href="#31-概述">3.1. 概述</a></li>
+<li><a href="#32-发布密钥">3.2. 发布密钥</a></li>
+<li><a href="#33-发送初始消息">3.3. 发送初始消息</a></li>
+<li><a href="#34-接收初始消息">3.4. 接收初始消息</a></li>
+</ul>
+</li>
+<li><a href="#4-安全性考虑">4. 安全性考虑</a><ul>
+<li><a href="#41-认证">4.1. 认证</a></li>
+<li><a href="#42-协议重播">4.2. 协议重播</a></li>
+<li><a href="#43-重播和密钥重用">4.3. 重播和密钥重用</a></li>
+<li><a href="#44-可否性">4.4. 可否性</a></li>
+<li><a href="#45-签名">4.5. 签名</a></li>
+<li><a href="#46-密钥妥协">4.6. 密钥妥协</a></li>
+<li><a href="#47-服务器可信">4.7. 服务器可信</a></li>
+<li><a href="#48-身份绑定">4.8. 身份绑定</a></li>
+</ul>
+</li>
+<li><a href="#5-知识产权">5. 知识产权</a></li>
+<li><a href="#6-致谢">6. 致谢</a></li>
+<li><a href="#7-参考">7. 参考</a></li>
+</ul>
+<!-- tocstop -->
+<h1><span id="1-引言">1. 引言</span></h1><p>本文档描述了“X3DH”（或“迪菲赫尔曼三重扩展”）密钥协商协议。 X3DH在基于公钥相互认证的两方之间建立共享密钥。 X3DH提供前向安全性和加密可否性。</p>
+<p>X3DH设计用于这样的异步场景，其中一个用户（“Bob”）处于脱机状态但已向服务器发布了一些信息。 另一个用户（“Alice”）想要使用该信息将加密数据发送给Bob，并且还建立用于将来通信的共享密钥。</p>
+<h1><span id="2-提要">2. 提要</span></h1><h2><span id="21-x3dh-参数">2.1. X3DH 参数</span></h2><p>使用X3DH的应用程序必须使用以下几个参数：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">名称</th>
+<th style="text-align:left">定义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><em>curve</em></td>
+<td style="text-align:left">X25519 or X448</td>
+</tr>
+<tr>
+<td style="text-align:left"><em>hash</em></td>
+<td style="text-align:left">256或512位散列函数（例如SHA-256或SHA-512）</td>
+</tr>
+<tr>
+<td style="text-align:left"><em>info</em></td>
+<td style="text-align:left">标识应用程序的ASCII字符串</td>
+</tr>
+</tbody>
+</table>
+<p>例如：应用程序可以选择curve=X25519，hash=SHA-512，info=”MyProtocol”</p>
+<p>应用程序必须另外定义编码函数Encode（PK）以将X25519或X448公钥PK编码为字节序列。 推荐采用一些单字节常量表示curve的类型，和具体的u-coordinate[<a href="https://www.signal.org/docs/specifications/x3dh/#ref-rfc7748" target="_blank" rel="noopener">1</a>]进行little-endian 编码组成的编码方式进行编码。</p>
+<h2><span id="22-加密符号">2.2. 加密符号</span></h2><p>X3DH 使用以下符号:</p>
+<ul>
+<li><p><strong>X</strong> || <strong>Y</strong> 表示字节序列 <strong>X</strong> 和 <strong>Y</strong> 的连接。<strong><em>(连接具体指什么，没明白？)</em></strong></p>
+</li>
+<li><p><strong>DH(PK1, PK2)</strong> 表示以公钥PK1和PK2所表示的密钥对作为输入，通过<strong>椭圆曲线迪菲赫尔曼函数</strong>输出的共享加密字节序列。<strong>椭圆曲线迪菲赫尔曼函数</strong>根据不同的curve参数，采用[<a href="https://www.signal.org/docs/specifications/x3dh/#ref-rfc7748" target="_blank" rel="noopener">1</a>]中表示的X25519或X448函数进行处理。</p>
+</li>
+<li><p><strong>Sig(PK, M)</strong> 表示一个给字节序列M进行XEdDSA签名和用公钥PK验证，并通过使用与PK相符合的私钥对M进行签名来创建的字节序列。 XEdDSA的签名和验证函数具体描述可在[<a href="https://www.signal.org/docs/specifications/x3dh/#ref-xeddsa" target="_blank" rel="noopener">2</a>]中查看。</p>
+</li>
+<li><p><em>KDF(KM)</em></p>
+<p> 表示通过HKDF算法得到的32位输出结果 [<a href="https://www.signal.org/docs/specifications/x3dh/#ref-rfc5869" target="_blank" rel="noopener">3</a>]</p>
+<p> 输入:</p>
+<ul>
+<li><em>HKDF input key material</em> = <em>F</em> || <em>KM</em>, 其中<em>KM</em>是包含秘钥元素的输入字节序列，当curve使用X25519时，<em>F</em>是包含32位0xFF的字节序列，当curve使用X448时，F是包含57位0xFF的字节序列。<em>F</em> 用于与XEdDSA加密域的隔离。</li>
+<li><em>HKDF salt</em> = 长度等于hash长度且以0补齐不足长度的字节序列</li>
+<li><em>HKDF info</em> = <em>info</em> 参数查看 <a href="https://www.signal.org/docs/specifications/x3dh/#x3dh-parameters" target="_blank" rel="noopener">第2.1节</a>.</li>
+</ul>
+</li>
+</ul>
+<h2><span id="23-角色">2.3. 角色</span></h2><p>X3DH协议包含了3个角色： <strong>Alice（爱丽丝）</strong>, <strong>Bob（鲍勃）</strong>, <strong>server（服务器）</strong>.</p>
+<ul>
+<li><strong>Alice</strong> 希望发送给Bob一些用于加密的初始数据，同时建立可能用于双向交互的共享秘钥。</li>
+<li><strong>Bob</strong> 希望允许像Alice这样的人与他建立共享秘钥，并发送加密数据。但是，当Alice尝试这样做的时候，Bob可能处于离线状态。为了实现这一点，Bob与某个server建立了关系。</li>
+<li><strong>server</strong> 可以存储来自Alice给Bob的消息，让Bob可以延迟获取。server也可以让Bob发布一些数据通过server提供给像Alice这样的角色。具体服务器可信任的量在第4.7节中讨论。</li>
+</ul>
+<p>在某些系统中，服务器角色可能在多个实体之间划分，但为简单起见，我们假设一个服务器为Alice和Bob提供上述功能。</p>
+<h2><span id="24-密钥">2.4. 密钥</span></h2><p>X3DH 使用以下椭圆曲线公开密钥：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">名称</th>
+<th style="text-align:left">定义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><em>IKA</em></td>
+<td style="text-align:left">Alice’s identity key</td>
+</tr>
+<tr>
+<td style="text-align:left"><em>EKA</em></td>
+<td style="text-align:left">Alice’s ephemeral key</td>
+</tr>
+<tr>
+<td style="text-align:left"><em>IKB</em></td>
+<td style="text-align:left">Bob’s identity key</td>
+</tr>
+<tr>
+<td style="text-align:left"><em>SPKB</em></td>
+<td style="text-align:left">Bob’s signed prekey</td>
+</tr>
+<tr>
+<td style="text-align:left"><em>OPKB</em></td>
+<td style="text-align:left">Bob’s one-time prekey</td>
+</tr>
+</tbody>
+</table>
+<p>所有公钥都有相应的私钥，但为了简化描述，我们将重点关注公钥。</p>
+<p>X3DH协议运行中使用的公钥必须全部采用X25519格式，或者必须全部采用X448格式，具体取决于curve参数[<a href="https://www.signal.org/docs/specifications/x3dh/#ref-rfc7748" target="_blank" rel="noopener">1</a>]。</p>
+<p>每个角色都有一个长期的身份公开密钥 (<em>IKA</em> for Alice, <em>IKB</em> for Bob)。</p>
+<p>Bob还有一个签名的预密钥SPKB，它将定期更改，以及一组一次性预密钥OPKB，它们分别用于单个X3DH协议运行。 （“Prekeys”之所以如此命名是因为它们本质上是Bob在Alice开始协议运行之前发布到服务器的协议消息）。</p>
+<p>在每个协议运行期间，Alice使用公钥EKA生成新的临时密钥对。</p>
+<p>在成功执行协议之后，Alice和Bob将共享一个32字节的密钥SK。 该密钥可以在某些post-X3DH安全通信协议中使用，但需遵守<a href="#4">第4节</a>中的安全考虑。</p>
+<h1><span id="3-x3dh协议">3. X3DH协议</span></h1><h2><span id="31-概述">3.1. 概述</span></h2><p>X3DH有三个阶段：</p>
+<ol>
+<li>Bob将他的身份密钥和预密钥发布到服务器。</li>
+<li>Alice从服务器获取“prekey bundle”，并使用它向Bob发送初始消息。</li>
+<li>Bob接收并处理Alice的初始消息。</li>
+</ol>
+<p>以下部分解释了这些阶段。</p>
+<h2><span id="32-发布密钥">3.2. 发布密钥</span></h2><p>Bob向服务器发布一组椭圆曲线公钥，包含：</p>
+<ul>
+<li>Bob的 身份密钥<em>IKB</em></li>
+<li>Bob的 已签名的预密钥<em>SPKB</em></li>
+<li>Bob的 预密钥签名 <em>Sig(IKB,Encode(SPKB))</em></li>
+<li>Bob的 一组一次性预密钥（OPKB1，OPKB2，OPKB3，……）</li>
+</ul>
+<p>Bob只需要将他的身份密钥上传到服务器一次。 但是，Bob可以在其他时间上传新的一次性预密钥（例如，当服务器通知Bob服务器的一次性预密钥存储变低时）。</p>
+<p>Bob还将以某个间隔（例如，每周一次或每月一次）上传新签名的预密钥和预密钥签名。 新签名的预密钥和预密钥签名将替换以前的值。</p>
+<p>在上传新签名的预密钥之后，Bob可以将对应于先前签名的预密钥的私钥保持一段时间，用于处理使用该密钥产生的传输延迟的消息。 最终，Bob应删除此私钥保证前向安全（当Bob使用它们接收消息时，将删除一次性预密钥私钥;请参阅<a href="#3.4">第3.4节</a>）。</p>
+<h2><span id="33-发送初始消息">3.3. 发送初始消息</span></h2><p>为了与Bob执行X3DH密钥协议，Alice联系server获取包含以下值得”prekey bundle”:</p>
+<ul>
+<li>Bob的 身份密钥 <em>IKB</em></li>
+<li>Bob的 已签名预密钥 <em>SPKB</em></li>
+<li>Bob的 预密钥签名 <em>Sig(IKB, Encode(SPKB))</em></li>
+<li>(可选) Bob的 一次性预密钥 <em>OPKB</em></li>
+</ul>
+<p>server应该提供Bob的一次性预密钥中的一个(如果存在)，然后删除它。如果服务器上Bob的所有一次性预密钥都被删除了，预密钥簇(prekey bundle)中将不包含一次性预密钥。</p>
+<p>如果验证失败，Alice会验证预密钥签名并中止协议。 Alice然后使用公钥<em> EKA </em>生成临时密钥对。</p>
+<p>如果预密钥簇中不包含一次性预密钥，进行如下计算：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">DH1 = DH(IKA, SPKB)</span><br><span class="line">DH2 = DH(EKA, IKB)</span><br><span class="line">DH3 = DH(EKA, SPKB)</span><br><span class="line">SK = KDF(DH1 || DH2 || DH3)</span><br></pre></td></tr></table></figure>
+<p>如果预密钥簇确实包含一次性预密钥，则修改计算包含额外的<em>DH</em>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">DH4 = DH(EKA, OPKB)</span><br><span class="line">SK = KDF(DH1 || DH2 || DH3 || DH4)</span><br></pre></td></tr></table></figure></p>
+<p>下图显示了密钥之间的<em> DH </em>计算。 注意<em> DH1 </em>和<em> DH2 </em>提供相互认证，而<em> DH3 </em>和<em> DH4 </em>提供前向保密。</p>
+<p><img src="https://signal.org/docs/specifications/x3dh/X3DH.png" alt></p>
+<p>​                                        图1:DH1…DH4</p>
+<p>计算<em>SK</em>之后，Alice 删除他的临时私钥和<em>DH</em>输出</p>
+<p>Alice然后计算包含双方身份信息的“关联数据”字节序列<em> AD </em>：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AD = Encode(IKA) || Encode(IKB)</span><br></pre></td></tr></table></figure></p>
+<p>Alice可以选择将附加信息附加到<em> AD </em>，例如Alice和Bob的用户名，证书或其他识别信息。</p>
+<p>Alice然后给Bob发送一条初始信息，其中包含：</p>
+<ul>
+<li>Alice的身份密钥 <em>IKA</em></li>
+<li>Alice的临时密钥 <em>EKA</em></li>
+<li>Alice使用Bob的哪个预密钥的标志符</li>
+<li>使用某种AEAD加密方案加密的初始密文 [<a href="https://www.signal.org/docs/specifications/x3dh/#ref-aead" target="_blank" rel="noopener">4</a>] ，使用<em> AD </em>作为关联数据并使用加密密钥，该加密密钥是<em> SK </em>或由<em> SK </em>键入的某些加密PRF的输出。</li>
+</ul>
+<p>初始密文通常是某些post-X3DH通信协议中的第一个消息。 换句话说，这个密文通常有两个角色，作为一些post-X3DH协议中的第一个消息，并作为Alice的X3DH初始消息的一部分。</p>
+<p>After sending this, Alice may continue using <em>SK</em> or keys derived from <em>SK</em> within the post-X3DH protocol for communication with Bob, subject to the security considerations in <a href="https://www.signal.org/docs/specifications/x3dh/#security-considerations" target="_blank" rel="noopener">Section 4</a>.</p>
+<p>在发送之后，Alice可以继续使用<em> SK </em>或在post-X3DH协议中从<em> SK </em>派生的密钥与Bob进行通信，但需遵守<a href="#4">第4节</a>中的安全考虑因素。</p>
+<h2><span id="34-接收初始消息">3.4. 接收初始消息</span></h2><p>收到Alice的初始消息后，Bob从消息中检索Alice的身份密钥和短暂密钥。 Bob还加载了他的身份私钥，以及与Alice使用的任何已签名的预密钥和一次性预密钥（如果有的话）相对应的私钥。</p>
+<p>使用这些密钥，Bob重复上一节中的<em> DH </em>和<em> KDF </em>计算以导出<em> SK </em>，然后删除<em> DH </em>值。</p>
+<p>Bob然后使用<em> IKA </em>和<em> IKB </em>构造<em> AD </em>字节序列，如上一节所述。 最后，Bob尝试使用<em> SK </em>和<em> AD </em>解密初始密文。 如果初始密文无法解密，则Bob中止协议并删除<em> SK </em>。</p>
+<p>如果初始密文解密成功，则Bob完成协议。 Bob删除任何已经使用的一次性预密钥私钥，以保证前向安全性。 然后Bob可以继续使用<em> SK </em>或在post-X3DH协议中从<em> SK </em>派生的密钥与Alice进行通信，但需遵守<a href="#4.">第4节</a>中的安全考虑因素</p>
+<h1><span id="4-安全性考虑">4. 安全性考虑</span></h1><h2><span id="41-认证">4.1. 认证</span></h2><p>在X3DH密钥协议之前或之后，双方可以通过一些经过身份验证的通道比较其身份公钥<em> IKA </em>和<em> IKB </em>。 例如，他们可以手动比较公钥指纹，或者通过扫描QR码。 执行此操作的方法超出了本文档的范围。</p>
+<p>如果未执行身份验证，则各方不会收到与其通信对象的加密保证。</p>
+<h2><span id="42-协议重播">4.2. 协议重播</span></h2><p>如果Alice的初始消息不使用一次性预密钥，则可以将其重播给Bob并且他将接受它。 这可能导致Bob认为Alice已经多次向他发送了相同的消息（或消息集）。</p>
+<p>为了缓解这种情况，post-X3DH协议可能希望基于来自Bob的新的随机输入快速协商Alice的新加密密钥。 这是基于Diffie-Hellman的棘轮方案的典型行为[<a href="https://www.signal.org/docs/specifications/x3dh/#ref-doubleratchet" target="_blank" rel="noopener">5</a>]。</p>
+<p>Bob可以尝试其他缓解措施，例如维护观察到的消息的黑名单，或者更快地替换旧的签名预密钥。 分析这些缓解措施超出了本文档的范围。</p>
+<h2><span id="43-重播和密钥重用">4.3. 重播和密钥重用</span></h2><p>上一节中讨论的重播的另一个结果是成功重播的初始消息将导致Bob在不同的协议运行中导出相同的<em> SK </em>。</p>
+<p>因此，任何post-X3DH协议必须在Bob发送加密数据之前随机化加密密钥。 例如，Bob可以使用基于DH的棘轮协议将<em> SK </em>与新生成的<em> DH </em>输出结合起来以获得随机加密密钥[<a href="https://www.signal.org/docs/specifications/x3dh/＃REF-doubleratchet" target="_blank" rel="noopener">5</a>]。</p>
+<p>无法随机化Bob的加密密钥可能会导致灾难性的密钥重用。</p>
+<h2><span id="44-可否性">4.4. 可否性</span></h2><p>X3DH不会向Alice或Bob提供他们的通信内容或他们通信事实的可发布的加密证明。</p>
+<p>与OTR协议[<a href="https://www.signal.org/docs/specifications/x3dh/#ref-otr" target="_blank" rel="noopener">6</a>]中一样，在某些情况下，已经泄露了Alice或Bob的合法私钥的第三方可以 提供一个似乎在Alice和Bob之间的通信记录，并且只能由一些其他方创建，该另一方也可以访问Alice或Bob的合法私钥（即Alice或Bob本身，或其他已经泄露他们的人。 私钥）。</p>
+<p>如果任何一方在协议执行期间与第三方合作，他们将能够向这样的第三方提供他们的通信证明。 对“在线”拒绝的这种限制似乎是异步设置所固有的[<a href="https://www.signal.org/docs/specifications/x3dh/#ref-unger" target="_blank" rel="noopener">7</a>]。</p>
+<h2><span id="45-签名">4.5. 签名</span></h2><p>可能很容易观察到<em> DH </em>计算实现了相互认证和前向保密，并省略了预密钥签名。 然而，这将允许“弱前向保密”攻击：恶意服务器可以向Alice提供带有伪造预密钥的预密钥捆绑包，并且稍后损害Bob的<em> IKB </em>以计算<em> SK </em>。</p>
+<p>或者，可能很想用来自身份密钥的签名替换基于DH的相互认证（即<em> DH1 </em>和<em> DH2 </em>）。 但是，这会降低拒绝性，增加初始消息的大小，并且如果临时或预密钥私钥被泄露，或者签名方案被破坏，则会增加损害。</p>
+<h2><span id="46-密钥妥协">4.6. 密钥妥协</span></h2><p>虽然使用临时密钥和预密钥可以对缓解一些影响，但是一方的私钥妥协仍然会对安全性产生灾难性的影响。</p>
+<p>某一方的身份私钥妥协就允许他人冒充该方。</p>
+<p>根据许多考虑因素，某一方的预密钥私钥的妥协可能会影响较旧或较新的<em> SK </em>值的安全性。</p>
+<p>对所有可能的妥协方案进行全面分析超出了本文档的范围，但是对一些合理方案的部分分析如下：</p>
+<ul>
+<li>如果一次性预密钥用于协议运行，那么在蔚来某个时间对Bob的身份密钥和预密钥私钥进行妥协，将不会损害旧的<em> SK </em>(假设删除了<em> OPKB </em>的私钥)。</li>
+<li>如果一次性预密钥<em>没有</em>用于协议运行，那么来自该协议运行的<em> IKB </em>和<em> SPKB </em>的私钥的妥协将损害之前计算的<em> SK </em>。 频繁更换已签名的预密钥可以减轻这种影响，使用post-X3DH棘轮协议可以用新密钥快速替代<em> SK </em>，保证前向安全性 [<a href="https://www.signal.org/docs/specifications/x3dh/#ref-doubleratchet" target="_blank" rel="noopener">5</a>].</li>
+<li>预密钥私钥的妥协可以实现延伸到未来的攻击，例如被动计算<em> SK </em>值，以及模仿被入侵方的任意其他方（“密钥泄露假冒”）。这些攻击是可能的，直到受感染的一方取代他在服务器上的受损预设（在被动攻击的情况下）;或者删除他已妥协的签名预密钥的私钥（在密钥泄露假冒的情况下）。</li>
+</ul>
+<h2><span id="47-服务器可信">4.7. 服务器可信</span></h2><p>恶意服务器可能导致Alice和Bob之间的通信失败（例如，通过拒绝传递消息）。</p>
+<p>如果Alice和Bob在<a href="#4.1">第4.1节</a>中提及的相互验证，则服务器可用的唯一额外攻击是拒绝分发一次性预密钥，使<em> SK </em>的前向保密取决于签名的预密钥的生命周期（如上一节所述）。</p>
+<p>如果一方恶意消耗另一方的一次性预密钥，也可能发生初始前向保密的减少，因此服务器应该尝试阻止这种情况，例如， 获取prekey bundle的速率限制。</p>
+<h2><span id="48-身份绑定">4.8. 身份绑定</span></h2><p>在<a href="#4.1">第4.1节</a>中提及的身份验证不一定能防止”身份错误绑定“或”未知密钥共享“攻击。</p>
+<p>这导致攻击者（“Charlie”）错误地将Bob的身份密钥指纹呈现给Alice作为他(Charlie’s)自己拥有的身份密钥，然后将Alice的初始消息转发给Bob，或者错误地将Bob的联系信息呈现为他自己的。</p>
+<p>这样做的结果是Alice认为她正在向Charlie发送初始消息，因为她实际上正在向Bob发送消息。</p>
+<p>为了使这更加困难，各方可以将更多识别信息包括在<em> AD </em>中，或者将更多识别信息散列到指纹中，例如用户名，电话号码，真实姓名或其他识别信息。 Charlie将被迫对这些额外的价值撒谎，这可能很难。</p>
+<p>然而，没有办法可靠地防止Charlie对其他值进行撒谎，并且在协议中包含更多身份信息通常会在隐私，灵活性和用户界面方面带来权衡。 对这些权衡的详细分析超出了本文档的范围。</p>
+<h1><span id="5-知识产权">5. 知识产权</span></h1><p>特此将此文档置于公共领域。</p>
+<h1><span id="6-致谢">6. 致谢</span></h1><p>X3DH协议由Moxie Marlinspike和Trevor Perrin开发。</p>
+<p>底层的”三重DH“密钥协议由Caroline Kudla和Kenny Paterson在 [<a href="https://www.signal.org/docs/specifications/x3dh/#ref-kudla2005" target="_blank" rel="noopener">8</a>]中提出, 扩展了之前的”双重DH“（又名”协议4“）来自Simon Blake-Wilson等的密钥协议 [<a href="https://www.signal.org/docs/specifications/x3dh/#ref-blakewilson1997" target="_blank" rel="noopener">9</a>]. 在[<a href="https://www.signal.org/docs/specifications/x3dh/#ref-eckpfs" target="_blank" rel="noopener">10</a>] and [<a href="https://www.signal.org/docs/specifications/x3dh/#ref-joint" target="_blank" rel="noopener">11</a>]作品中讨论了将签名与隐式认证密钥协议使用的问题。</p>
+<p>感谢Mike Hamburg关于身份绑定和椭圆曲线公钥的讨论。</p>
+<p>感谢Nik Unger和Matthew Green关于拒绝的讨论。</p>
+<p>感谢Matthew Green，Tom Ritter，Joseph Bonneau和Benedikt Schmidt的编辑反馈。</p>
+<h1><span id="7-参考">7. 参考</span></h1><p>[1] A. Langley, M. Hamburg, and S. Turner, “Elliptic Curves for Security.” Internet Engineering Task Force; RFC 7748 (Informational); IETF, Jan-2016. <a href="http://www.ietf.org/rfc/rfc7748.txt" target="_blank" rel="noopener">http://www.ietf.org/rfc/rfc7748.txt</a></p>
+<p>[2] T. Perrin, “The XEdDSA and VXEdDSA Signature Schemes,” 2016. <a href="https://whispersystems.org/docs/specifications/xeddsa/" target="_blank" rel="noopener">https://whispersystems.org/docs/specifications/xeddsa/</a></p>
+<p>[3] H. Krawczyk and P. Eronen, “HMAC-based Extract-and-Expand Key Derivation Function (HKDF).” Internet Engineering Task Force; RFC 5869 (Informational); IETF, May-2010. <a href="http://www.ietf.org/rfc/rfc5869.txt" target="_blank" rel="noopener">http://www.ietf.org/rfc/rfc5869.txt</a></p>
+<p>[4] P. Rogaway, “Authenticated-encryption with Associated-data,” in Proceedings of the 9th ACM Conference on Computer and Communications Security, 2002. <a href="http://web.cs.ucdavis.edu/~rogaway/papers/ad.pdf" target="_blank" rel="noopener">http://web.cs.ucdavis.edu/~rogaway/papers/ad.pdf</a></p>
+<p>[5] T. Perrin, “The Double Ratchet Algorithm (work in progress),” 2016.</p>
+<p>[6] N. Borisov, I. Goldberg, and E. Brewer, “Off-the-record Communication, or, Why Not to Use PGP,” in Proceedings of the 2004 aCM workshop on privacy in the electronic society, 2004. <a href="http://doi.acm.org/10.1145/1029179.1029200" target="_blank" rel="noopener">http://doi.acm.org/10.1145/1029179.1029200</a></p>
+<p>[7] N. Unger and I. Goldberg, “Deniable Key Exchanges for Secure Messaging,” in Proceedings of the 22Nd aCM sIGSAC conference on computer and communications security, 2015. <a href="http://doi.acm.org/10.1145/2810103.2813616" target="_blank" rel="noopener">http://doi.acm.org/10.1145/2810103.2813616</a></p>
+<p>[8] C. Kudla and K. G. Paterson, “Modular Security Proofs for Key Agreement Protocols,” in Advances in Cryptology - ASIACRYPT 2005: 11th International Conference on the Theory and Application of Cryptology and Information Security, 2005. <a href="http://www.isg.rhul.ac.uk/~kp/ModularProofs.pdf" target="_blank" rel="noopener">http://www.isg.rhul.ac.uk/~kp/ModularProofs.pdf</a></p>
+<p>[9] S. Blake-Wilson, D. Johnson, and A. Menezes, “Key agreement protocols and their security analysis,” in Crytography and Coding: 6th IMA International Conference Cirencester, UK, December 17–19, 1997 Proceedings, 1997. <a href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.25.387" target="_blank" rel="noopener">http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.25.387</a></p>
+<p>[10] C. Cremers and M. Feltz, “One-round Strongly Secure Key Exchange with Perfect Forward Secrecy and Deniability.” Cryptology ePrint Archive, Report 2011/300, 2011. <a href="http://eprint.iacr.org/2011/300" target="_blank" rel="noopener">http://eprint.iacr.org/2011/300</a></p>
+<p>[11] J. P. Degabriele, A. Lehmann, K. G. Paterson, N. P. Smart, and M. Strefler, “On the Joint Security of Encryption and Signature in EMV.” Cryptology ePrint Archive, Report 2011/615, 2011. <a href="http://eprint.iacr.org/2011/615" target="_blank" rel="noopener">http://eprint.iacr.org/2011/615</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://wwww.windowshare.top/2019/03/27/x3dh/" data-id="cjuwmsg420003n6acqdp9o6hr" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/x3dh/">x3dh</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-init" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/03/20/init/" class="article-date">
+  <time datetime="2019-03-20T14:14:55.000Z" itemprop="datePublished">2019-03-20</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/随笔/">随笔</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/03/20/init/">初始化</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>初始化中…</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://wwww.windowshare.top/2019/03/20/init/" data-id="cjuwmsg3b0000n6acidkwnkpz" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/翻译/">翻译</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/翻译/端对端协议/">端对端协议</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/随笔/">随笔</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/x3dh/">x3dh</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/x3dh/" style="font-size: 10px;">x3dh</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/03/27/x3dh/">X3DH(迪菲赫尔曼三重扩展密钥协商协议)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/20/init/">初始化</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 windowshare<br>
+      Powered by <a href="http://windowshare.top/" target="_blank">windowshare</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
