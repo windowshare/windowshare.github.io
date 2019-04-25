@@ -3,6 +3,7 @@ title: X3DH(迪菲赫尔曼三重扩展密钥协商协议)
 date: 2019.03.27 22:14:55
 categories:
 - 翻译
+- 端对端协议
 tags:
 - x3dh
 ---
@@ -10,15 +11,12 @@ tags:
 
 迪菲赫尔曼三重扩展密钥协商协议
 
-2019.03.27
-
 本文是 [Signal 协议](https://en.wikipedia.org/wiki/Signal_Protocol)中使用的「迪菲赫尔曼三重扩展密钥协议」的中文翻译（部分保持原文不翻译），[英文原文地址](https://www.signal.org/docs/specifications/x3dh/) 
 
 ------
+[comment:]:[TOC]
 
-
-
-[TOC]
+<!-- toc -->
 
 # 1. 引言
 
